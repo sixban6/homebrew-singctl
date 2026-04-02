@@ -33,6 +33,23 @@ class Singctl < Formula
     pkgshare.install cfg if cfg
   end
 
+  def post_install
+    source_cfg = pkgshare/"configs/singctl.yaml"
+    return unless source_cfg.exist?
+
+    system_cfg_dir = Pathname.new("/etc/singctl")
+    system_cfg = system_cfg_dir/"singctl.yaml"
+    return if system_cfg.exist?
+
+    begin
+      system_cfg_dir.mkpath
+      system_cfg.write(source_cfg.read)
+    rescue Errno::EACCES, Errno::EPERM
+      opoo "Cannot create /etc/singctl/singctl.yaml due to insufficient permissions."
+      opoo "You can manually copy #{source_cfg} to /etc/singctl/singctl.yaml."
+    end
+  end
+
   test do
     output = shell_output("#{bin}/singctl version")
     assert_match version.to_s, output
