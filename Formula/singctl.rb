@@ -1,8 +1,8 @@
 class Singctl < Formula
   desc "Sing-box management tool"
   homepage "https://github.com/sixban6/singctl"
-  license "MIT"
   version "1.21.10"
+  license "MIT"
 
   on_macos do
     on_arm do
