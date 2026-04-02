@@ -1,0 +1,33 @@
+name: Update Singctl Formula
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 */6 * * *"
+
+permissions:
+  contents: write
+
+jobs:
+  update-formula:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Update formula to latest release
+        run: ./scripts/update-formula.sh
+
+      - name: Commit and push when changed
+        run: |
+          if git diff --quiet; then
+            echo "No formula changes detected."
+            exit 0
+          fi
+
+          version="$(awk -F'"' '/^[[:space:]]*version "/ {print $2; exit}' Formula/singctl.rb)"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Formula/singctl.rb
+          git commit -m "chore: bump singctl to v${version}"
+          git push origin HEAD:main
