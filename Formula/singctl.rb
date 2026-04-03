@@ -37,17 +37,12 @@ class Singctl < Formula
     source_cfg = pkgshare/"configs/singctl.yaml"
     return unless source_cfg.exist?
 
-    system_cfg_dir = Pathname.new("/etc/singctl")
-    system_cfg = system_cfg_dir/"singctl.yaml"
-    return if system_cfg.exist?
+    brew_cfg_dir = etc/"singctl"
+    brew_cfg = brew_cfg_dir/"singctl.yaml"
+    return if brew_cfg.exist?
 
-    begin
-      system_cfg_dir.mkpath
-      system_cfg.write(source_cfg.read)
-    rescue Errno::EACCES, Errno::EPERM
-      opoo "Cannot create /etc/singctl/singctl.yaml due to insufficient permissions."
-      opoo "You can manually copy #{source_cfg} to /etc/singctl/singctl.yaml."
-    end
+    brew_cfg_dir.mkpath
+    brew_cfg.write(source_cfg.read)
   end
 
   test do
