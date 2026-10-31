@@ -16,6 +16,8 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Update formula to latest release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./scripts/update-formula.sh
 
       - name: Commit and push when changed

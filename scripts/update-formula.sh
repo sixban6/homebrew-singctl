@@ -6,9 +6,16 @@ REPO_NAME="${REPO_NAME:-singctl}"
 FORMULA_PATH="${FORMULA_PATH:-Formula/singctl.rb}"
 
 release_api="https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/releases/latest"
-latest_tag="$(curl -fsSL "${release_api}" | awk -F'"' '/"tag_name":/ {print $4; exit}')"
 
-if [[ -z "${latest_tag}" ]]; then
+curl_args=(-fsSL)
+if [[ -n "${GITHUB_TOKEN:-}" ]]; then
+  curl_args+=(-H "Authorization: Bearer ${GITHUB_TOKEN}")
+fi
+
+release_json="$(curl "${curl_args[@]}" "${release_api}")"
+latest_tag="$(ruby -rjson -e 'puts JSON.parse(STDIN.read)["tag_name"]' <<<"${release_json}")"
+
+if [[ -z "${latest_tag}" || "${latest_tag}" == "null" ]]; then
   echo "failed to read latest release tag from ${release_api}" >&2
   exit 1
 fi
@@ -66,6 +73,12 @@ end
 text = text.sub(/(singctl-linux-arm64\.tar\.gz"\n\s*sha256\s+")[^"]+(")/m) do
   linux_arm64_sha_replaced = true
   "#{$1}#{ENV.fetch("LINUX_ARM64_SHA")}#{$2}"
+end
+
+unless text.include?("version_scheme")
+  text = text.sub(/(license\s+"[^"]+"\n)/) do
+    "#{$1}  version_scheme 1\n"
+  end
 end
 
 unless version_replaced && darwin_sha_replaced && linux_amd64_sha_replaced && linux_arm64_sha_replaced
