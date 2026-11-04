@@ -1,26 +1,31 @@
 class Singctl < Formula
   desc "Sing-box management tool"
   homepage "https://github.com/sixban6/singctl"
-  version "1.14.32"
+  version "1.14.33"
   license "MIT"
   version_scheme 1
 
   on_macos do
     on_arm do
       url "https://github.com/sixban6/singctl/releases/download/v#{version}/singctl-darwin-arm64.tar.gz"
-      sha256 "e84ec84eca50727dcd004374f7cd6174d39919539f8631b9d60e5c4c08048937"
+      sha256 "abf3b2874ee2d71f68ef89566cee6070c7f44997ebca42ffab0a4c75df0b08b2"
+    end
+
+    on_intel do
+      url "https://github.com/sixban6/singctl/releases/download/v#{version}/singctl-darwin-amd64.tar.gz"
+      sha256 "9a6205429b9a2453372d845f7817b5160bbbd9a2189a1d67d9ac8fc8df78cc2b"
     end
   end
 
   on_linux do
     on_intel do
       url "https://github.com/sixban6/singctl/releases/download/v#{version}/singctl-linux-amd64.tar.gz"
-      sha256 "f2b57d693d637b0af9056547a477c0d1a2fa172940a19411fcaa65c8213113a3"
+      sha256 "40c34d69a041904c7378121ae8dd644d77cc1b4ac4b87f4ae0d1366b4ed55c40"
     end
 
     on_arm do
       url "https://github.com/sixban6/singctl/releases/download/v#{version}/singctl-linux-arm64.tar.gz"
-      sha256 "efa0a0479bce8f13d78469c37b421acf28ebf9ef5121178f98cca0280ea97025"
+      sha256 "40d607b591e9e3291abd0d7f3740391f6116048dd93eaa550693bc18f10f1c12"
     end
   end
 
@@ -44,6 +49,7 @@ class Singctl < Formula
 
     brew_cfg_dir.mkpath
     brew_cfg.write(source_cfg.read)
+    brew_cfg.chmod 0600
   end
 
   test do
