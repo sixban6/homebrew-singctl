@@ -1,14 +1,14 @@
 class Singctl < Formula
   desc "Sing-box management tool"
   homepage "https://github.com/sixban6/singctl"
-  version "1.14.198"
+  version "1.14.202"
   license "MIT"
   version_scheme 1
 
   on_macos do
     on_arm do
       url "https://github.com/sixban6/singctl/releases/download/v#{version}/singctl-darwin-arm64.tar.gz"
-      sha256 "e1620e84e63f4774bb734823dba05ebd06b9c42b76f53b1ca30b8c6fabd6582e"
+      sha256 "9263603641578e4d1a45128162196c97e8aba9e13d4753b6f937c8cb58ec9354"
     end
 
     on_intel do
@@ -20,12 +20,12 @@ class Singctl < Formula
   on_linux do
     on_intel do
       url "https://github.com/sixban6/singctl/releases/download/v#{version}/singctl-linux-amd64.tar.gz"
-      sha256 "be84ff498305ad4b2f8583ae77dd488228643233e001e05c8472d07e14b6f9ae"
+      sha256 "e927c056fc695835450457f8484dca816a9e9f8019a8293da9cb3bf67b322766"
     end
 
     on_arm do
       url "https://github.com/sixban6/singctl/releases/download/v#{version}/singctl-linux-arm64.tar.gz"
-      sha256 "1afaa2df4f9aad28f740487005d0244abb634417ec7dbf4d92cbcbfeb701d92e"
+      sha256 "8539fc025fe1e12bebf2fd55b7f4fa9396c8156dc3f207a4726e95a1410d7e1d"
     end
   end
 
